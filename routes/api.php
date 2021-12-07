@@ -31,3 +31,18 @@ Route::namespace('App\Http\Controllers\Api\v1\Auth')
         }
     );
 
+/*
+|--------------------------------------------------------------------------
+| User Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::namespace('App\Http\Controllers\Api\v1\User')
+    ->middleware(['auth:api', 'role'])
+    ->prefix('v1/user')
+    ->group(
+        function() {
+
+
+        }
+    );
