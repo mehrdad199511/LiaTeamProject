@@ -52,3 +52,20 @@ Route::namespace('App\Http\Controllers\Api\v1\User')
             Route::delete('/delete/{id}', 'UserController@destroy')->middleware(['scope:superAdmin']);
         }
     );
+
+
+/*
+|--------------------------------------------------------------------------
+| Role Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::namespace('App\Http\Controllers\Api\v1\Role')
+->middleware(['auth:api', 'role'])
+->prefix('v1/role')
+->group(
+    function() {
+        // change user role 
+        Route::put('/change/{id}', 'RoleController@update')->middleware(['scope:superAdmin']);
+    }
+);
