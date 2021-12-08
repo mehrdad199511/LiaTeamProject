@@ -3,6 +3,7 @@
 Lia company employment project  
 It is a project in which the possibility of registering, login and editing users and controlling the access level of users has been implemented.
 In this project, by passport scope, three types of roles are envisaged(superAdmin,admin,basic), and each of which has a specific level of access.
+Therefore, each token that is created has a specific access level.
 
 ## How can I run it?
 ### #1 Execute composer install command.
@@ -10,7 +11,11 @@ In this project, by passport scope, three types of roles are envisaged(superAdmi
 composer install
 ```
 
-### #2 Create a database in your machin and set configs in .env file
+### #2 Create a database in your machin and set configs in .env file and run below commands .
+```bash
+php artisan key:generate
+php artisan config:cache
+```
 
 ### #3 Run migrate command for create the tables.
 ```bash
@@ -19,6 +24,7 @@ php artisan migrate
 
 ### #4 You should execute the passport:install Artisan command. This command will create the encryption keys needed to generate secure access tokens .
 ```bash
+composer require laravel/passport
 php artisan passport:install
 ```
 
