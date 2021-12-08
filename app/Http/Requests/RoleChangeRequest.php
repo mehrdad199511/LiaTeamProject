@@ -31,6 +31,13 @@ class RoleChangeRequest extends FormRequest
         ];
     }
 
+    public function messages()
+    {
+        return [
+            'role.in' => 'The selected role is invalid. (superAdmin,admin,basic is valid)'
+        ];
+    }
+
 
     /**
      * @param Validator $validator

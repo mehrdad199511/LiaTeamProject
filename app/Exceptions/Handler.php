@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -34,8 +35,13 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (\Exception $exception, $request) {
+
+            if ($exception instanceof AccessDeniedHttpException) {
+                return response()->json([
+                    'message' => 'User not authorized to access this area !'
+                ], 403);
+            }
         });
     }
 }
