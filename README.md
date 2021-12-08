@@ -1,66 +1,158 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# LiaTeam
+## About
+Lia company employment project  
+It is a project in which the possibility of registering, login and editing users and controlling the access level of users has been implemented.
+In this project, by passport scope, three types of roles are envisaged(superAdmin,admin,basic), and each of which has a specific level of access.
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## How can I run it?
+### #1 Execute composer install command.
+```bash
+composer install
+```
 
-## About Laravel
+### #2 Create a database in your machin and set configs in .env file
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### #3 Run migrate command for create the tables.
+```bash
+php artisan migrate
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### #4 You should execute the passport:install Artisan command. This command will create the encryption keys needed to generate secure access tokens .
+```bash
+php artisan passport:install
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### #5 Run below command for create sample user.
+```bash
+php artisan db:seed
+```
 
-## Learning Laravel
+### #6 Run below command for start the app.
+```bash
+php artisan serve
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### #7 Make sure everything is OK! :wink:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
+## How can I dive into?
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### #1 Authentication section
+#### Do Register
+```bash
+curl -X POST "http://localhost/api/v1/auth/register" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"name": "your name", "email": "your email", "password": "your password", "password_confirmation": "your password"}'
+```
+##### Result sample
+```json
+{
+  "message": "User creation is successful!",
+  "user": {
+   "id": ?,
+    "name": "Your name",
+    "email": "Your email",
+    "created_at": "create datetime",
+    "updated_at": "update dateTime"
+  },
+  "token": "eyJ0eXAiO.........."
+}
+```
 
-### Premium Partners
+#### Do login
+```bash
+curl -X POST "http://localhost/api/v1/auth/login" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"email": "your email", "password": "your password"}'
+```
+##### Result sample
+```json
+{
+  "message": "Successful login!",
+  "user": {
+    "name": "your name",
+    "email": "your email"
+  },
+  "token": "eyJ0eXAiO.........."
+}
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-- **[Romega Software](https://romegasoftware.com)**
+### #2 user section
 
-## Contributing
+#### get all users list (Note: Any type of user has access to this data.)
+```bash
+curl -X GET "http://localhost:8000/api/v1/user/usersList" -H "Accept: application/json" -H "Authorization: Bearer token"
+```
+##### Result sample
+```json
+{
+    "message": "Successful get user info",
+    "data": [
+        {
+            "id": ?,
+            "name": "User name",
+            "email": "User email address",
+            "created_at": "create datetime",
+            "updated_at": "update dateTime"
+        },
+        .
+        .
+        .
+    ]
+}
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+#### Get a user by id (Note: Any type of user has access to this data.)
+```bash
+curl -X GET "http://localhost:8000/api/v1/user/getUser/?" -H "Content-Type: application/json" -H "Accept: application/json" -H "Authorization: Bearer token"
+```
+##### Result sample
+```json
+{
+  "message": "Successful get user info",
+    "data": {
+        "id": ?,
+        "name": "User name",
+        "email": "User email address",
+        "created_at": "create datetime",
+        "updated_at": "update dateTime"
+    }
+  ]
+}
+```
 
-## Code of Conduct
+#### update user name and password (Note: superAdmin and admin has access to this action.)
+```bash
+curl -X GET "localhost:8000/api/v1/user/update/?" -H "Content-Type: application/json" -H "Accept: application/json" -H "Authorization: Bearer token" -d '{"name": "Your name", "password": "your password"}'
+```
+##### Result sample
+```json
+{
+  {
+     "message": "Successfull update info."
+  }
+}
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+#### Delete user (Note: only superAdmin has access to this action.)
+```bash
+curl -X DELETE "http://localhost/api/v1/user/delete/?" -H "Content-Type: application/json" -H "Accept: application/json" -H "Authorization: Bearer token"
+```
+##### Result sample
+```json
+{
+  {
+    "message": "Successfull delete user"
+  }
+}
+```
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### #3 Message section
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+#### change user role (Note: only superAdmin has access to this action.)
+```bash
+curl -X GET "http://localhost:8000/api/v1/role/change/3" -H "Content-Type: application/json" -H "Accept: application/json" -H "Authorization: Bearer token" -d '{"role": "admin"}'
+```
+##### Result sample
+```json
+{
+  "message": "Successfull update role."
+}
+```
